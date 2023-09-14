@@ -29,5 +29,5 @@ def arithmetic_arranger(problems, show_result=False):
 
 
 problemss=['39 - 65',    '70 + 677']
-answer= arithmetic_arranger(problemss)
+answer= arithmetic_arranger(problemss, True)
 print (answer)
