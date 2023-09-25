@@ -21,7 +21,7 @@ def arithmetic_arranger(problems, val=False):
         return arranged_problems
 
     if not all(map(lambda x: len(x) < 5, numbers)):
-        arranged_problems = "Error: Numbers cannot be more than four digits."
+        arranged_problems = "Error: Numbers cannot be more than four  digits."
         return arranged_problems
 
     top_row = ''
