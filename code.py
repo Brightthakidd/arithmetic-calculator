@@ -1,33 +1,58 @@
-def arithmetic_arranger(problems, show_result=False):
-    if len(problems) > 5: 
-        return "Error: Too many problems."
+def arithmetic_arranger(problems, val=False):
+    arranged_problems = ''
+    if len(problems) > 5:
+        arranged_problems = "Error: Too many problems."
+        return arranged_problems
 
-    arranged_problems = []
-    for problem in problems:
-        num1, operator, num2 = problem.split()
-        if operator not in "+-":
-            return "Error: Operator must be '+' or '-'."
-        if not (num1.isdigit() and num2.isdigit()):
-            return "Error: Numbers must only contain digits."
-        if len(num1) > 4 or len(num2) > 4:
-            return "Error: Numbers cannot be more than four digits."
+    # list of all operations in str format
+    operations = list(map(lambda x: x.split()[1], problems))
+    if set(operations) != {'+', '-'} and len(set(operations)) != 2:
+        arranged_problems = "Error: Operator must be '+' or '-'."
+        return arranged_problems
 
-        max_len = max(len(num1), len(num2))
-        arranged_problem = f"{num1:>{max_len}}\n{operator} {num2:>{max_len}}"
-        arranged_problem_string=str(arranged_problem)
-        line = '-' * (max_len + 2)
-        result = str(eval(problem)) if show_result else ""
+    numbers = []  # list of all operands in str format
+    for i in problems:
+        p = i.split()
+        numbers.extend([p[0], p[2]])
 
-        arranged_problems.append((arranged_problem, line, result))
+    if not all(map(lambda x: x.isdigit(), numbers)):
+        arranged_problems = "Error: Numbers must only contain digits."
+        return arranged_problems
 
-    top_line, bottom_line, result_line = map('    '.join, zip(*arranged_problems))
+    if not all(map(lambda x: len(x) < 5, numbers)):
+        arranged_problems = "Error: Numbers cannot be more than four digits."
+        return arranged_problems
 
-    if show_result:
-        return f"{top_line}\n{bottom_line}\n{result_line}"
+    top_row = ''
+    dashes = ''
+    values = list(map(lambda x: eval(x), problems))
+    solutions = ''
+    for i in range(0, len(numbers), 2):
+        space_width = max(len(numbers[i]), len(numbers[i+1])) + 2
+        top_row += numbers[i].rjust(space_width)
+        dashes += '-' * space_width
+        solutions += str(values[i // 2]).rjust(space_width)
+        if i != len(numbers) - 2:
+            top_row += ' ' * 4
+            dashes += ' ' * 4
+            solutions += ' ' * 4
+
+    bottom_row = ''
+    for i in range(1, len(numbers), 2):
+        space_width = max(len(numbers[i - 1]), len(numbers[i])) + 1
+        bottom_row += operations[i // 2]
+        bottom_row += numbers[i].rjust(space_width)
+        if i != len(numbers) - 1:
+            bottom_row += ' ' * 4
+
+    if val:
+        arranged_problems = '\n'.join((top_row, bottom_row, dashes, solutions))
     else:
-        return f"{top_line}\n{bottom_line}"
+        arranged_problems = '\n'.join((top_row, bottom_row, dashes))
+    return arranged_problems
 
 
-problemss=['39 - 65',    '70 + 677']
+
+problemss=['39 - 65', '45 + 67']
 answer= arithmetic_arranger(problemss, True)
 print (answer)
