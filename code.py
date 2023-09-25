@@ -1,5 +1,4 @@
 
-
 def arithmetic_arranger(problems, val=False):
     arranged_problems = ''
     if len(problems) > 5:
@@ -54,5 +53,4 @@ def arithmetic_arranger(problems, val=False):
     return arranged_problems
 
 
-problemss=['45 + eeee43']
-print(arithmetic_arranger(problemss,True))
+print(arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 - 49"],True))
